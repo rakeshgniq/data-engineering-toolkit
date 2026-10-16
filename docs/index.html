@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Engineering Toolkit · SingleStore Pipeline Automation Hub</title>
+  <meta name="description" content="Internal self-service portal for Data Engineers: SingleStore pipeline export, SQL execution, configuration sync and developer utilities.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ============================================================
+     NAVIGATION
+     ============================================================ -->
+<header class="nav" id="nav">
+  <div class="container nav__inner">
+    <a href="#home" class="nav__brand">
+      <span class="nav__logo">🚀</span>
+      <span>Data Engineering <strong>Toolkit</strong></span>
+    </a>
+    <button class="nav__toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="nav__links" id="navLinks">
+      <a href="#home">Home</a>
+      <a href="#features">Features</a>
+      <a href="#tools">Tools</a>
+      <a href="#docs">Documentation</a>
+      <a href="#repo">Repository</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<section class="hero" id="home">
+  <div class="hero__glow hero__glow--1"></div>
+  <div class="hero__glow hero__glow--2"></div>
+  <div class="container hero__inner">
+    <div class="hero__badge">Internal · Self-service portal</div>
+    <h1 class="hero__title">🚀 Data Engineering Toolkit</h1>
+    <p class="hero__subtitle">SingleStore Pipeline Automation Hub</p>
+    <p class="hero__desc">
+      A centralized toolkit for exporting pipelines, generating SQL, synchronizing configurations,
+      and accelerating SingleStore development workflows.
+    </p>
+    <div class="hero__cta">
+      <a href="#tools" class="btn btn--primary">View Toolkit</a>
+      <a href="#docs" class="btn btn--ghost">Documentation</a>
+    </div>
+    <div class="hero__stats" id="heroStats">
+      <div><strong data-stat="tools">–</strong><span>Tools</span></div>
+      <div><strong data-stat="stable">–</strong><span>Ready to use</span></div>
+      <div><strong data-stat="categories">–</strong><span>Categories</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FEATURES (static capability overview)
+     ============================================================ -->
+<section class="section" id="features">
+  <div class="container">
+    <div class="section__head">
+      <h2>What the toolkit does</h2>
+      <p>Everything an engineer needs to move SingleStore pipelines safely between environments.</p>
+    </div>
+    <div class="grid grid--3">
+      <article class="card reveal">
+        <div class="card__icon" data-icon="export"></div>
+        <h3>Export Pipelines</h3>
+        <p>Dump every <code>CREATE PIPELINE</code> definition from a database into one idempotent SQL file.</p>
+      </article>
+      <article class="card reveal">
+        <div class="card__icon" data-icon="code"></div>
+        <h3>Generate SQL Scripts</h3>
+        <p>Produce ready-to-run <code>CREATE OR REPLACE</code> statements you can review, version and share.</p>
+      </article>
+      <article class="card reveal">
+        <div class="card__icon" data-icon="play"></div>
+        <h3>Execute SQL</h3>
+        <p>Run any .sql file statement by statement with progress, failure summary and a dry-run mode.</p>
+      </article>
+      <article class="card reveal">
+        <div class="card__icon" data-icon="sync"></div>
+        <h3>Pipeline Synchronization</h3>
+        <p>Export from one database, apply to another — a repeatable two-step promotion flow.</p>
+      </article>
+      <article class="card reveal">
+        <div class="card__icon" data-icon="tools"></div>
+        <h3>Developer Utilities</h3>
+        <p>Bash-first helpers that run on your laptop. No servers, no clusters, no stored credentials.</p>
+      </article>
+      <article class="card reveal">
+        <div class="card__icon" data-icon="book"></div>
+        <h3>Best Practices</h3>
+        <p>Dry-run first, never commit passwords, keep exports out of git — baked into every tool.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     TOOLS — MASTER INDEX (rendered from tools.json)
+     ============================================================ -->
+<section class="section section--alt" id="tools">
+  <div class="container">
+    <div class="section__head">
+      <h2>Tool catalogue</h2>
+      <p>Pick a tool, copy the install command, run it locally. New utilities appear here automatically.</p>
+    </div>
+
+    <div class="toolbar">
+      <input type="search" id="toolSearch" class="input" placeholder="Search tools, tags…" aria-label="Search tools">
+      <div class="chips" id="statusChips">
+        <button class="chip chip--active" data-status="all">All</button>
+        <button class="chip" data-status="stable">Stable</button>
+        <button class="chip" data-status="beta">Beta</button>
+        <button class="chip" data-status="planned">Planned</button>
+      </div>
+    </div>
+
+    <div id="toolIndex" class="tool-index">
+      <p class="muted">Loading catalogue…</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     DOCUMENTATION
+     ============================================================ -->
+<section class="section" id="docs">
+  <div class="container">
+    <div class="section__head">
+      <h2>Documentation</h2>
+      <p>Guides and references. Items marked “coming soon” are placeholders for future pages.</p>
+    </div>
+    <ul class="doc-list" id="docList"></ul>
+  </div>
+</section>
+
+<!-- ============================================================
+     REPOSITORY
+     ============================================================ -->
+<section class="section section--alt" id="repo">
+  <div class="container repo">
+    <div class="repo__icon" data-icon="github"></div>
+    <h2>Source repository</h2>
+    <p>All scripts, templates and this site live in one GitHub repository. Contributions welcome.</p>
+    <a id="repoLink" class="btn btn--primary" href="https://github.com/rakeshgniq/data-engineering-toolkit" target="_blank" rel="noopener">
+      Open on GitHub
+    </a>
+    <div class="repo__install">
+      <span class="muted">Install any tool:</span>
+      <code id="installCmd">curl -sL https://raw.githubusercontent.com/rakeshgniq/data-engineering-toolkit/main/install.sh | bash -s &lt;tool-name&gt;</code>
+      <button class="copy" data-copy="#installCmd" aria-label="Copy install command">Copy</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="footer">
+  <div class="container footer__inner">
+    <div>
+      <strong>Data Engineering Toolkit</strong>
+      <span>Built for Data Engineers</span>
+    </div>
+    <div class="muted">© <span id="year"></span> · Internal use</div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
+

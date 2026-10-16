@@ -1,0 +1,20 @@
+# Byte-compiled / caches
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Generated outputs (may contain connection strings)
+*.sql
+out/
+
+# Local secrets / config
+.env
+*.local
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+

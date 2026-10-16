@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pipeline Export &amp; Sync · Data Engineering Toolkit</title>
+  <meta name="description" content="Export SingleStore pipeline definitions to SQL and re-apply them with a dry-run safety step. Runs locally in bash.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<!-- ============================================================
+     NAVIGATION (links back to master index)
+     ============================================================ -->
+<header class="nav">
+  <div class="container nav__inner">
+    <a href="../index.html" class="nav__brand">
+      <span class="nav__logo">🚀</span>
+      <span>Data Engineering <strong>Toolkit</strong></span>
+    </a>
+    <button class="nav__toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="nav__links" id="navLinks">
+      <a href="../index.html#home">Home</a>
+      <a href="../index.html#tools">Tools</a>
+      <a href="#generator">Command generator</a>
+      <a href="#how">How it works</a>
+      <a href="https://github.com/rakeshgniq/data-engineering-toolkit/tree/main/tools/singlestore-pipeline-sync" target="_blank" rel="noopener">Source</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============================================================
+     PAGE HERO
+     ============================================================ -->
+<section class="page-hero">
+  <div class="container">
+    <div class="crumbs"><a href="../index.html">Toolkit</a> / <a href="../index.html#tools">SingleStore</a> / Pipeline Export &amp; Sync</div>
+    <h1>Pipeline Export &amp; Sync <span class="badge badge--stable">stable</span></h1>
+    <p class="muted" style="max-width:760px">
+      Exports every <code>CREATE PIPELINE</code> definition from a SingleStore database into one idempotent
+      <code>pipelines.sql</code>, then re-applies it statement by statement. Runs on <strong>your machine in bash</strong>
+      — nothing is sent to this site, and your password is prompted locally and never stored.
+    </p>
+  </div>
+</section>
+
+<!-- ============================================================
+     COMMAND GENERATOR + STEPS
+     ============================================================ -->
+<section class="section" id="generator">
+  <div class="container two-col">
+
+    <!-- Left: form -->
+    <div class="card stack">
+      <div>
+        <h2 style="margin:0 0 .3rem">Generate your command</h2>
+        <p class="muted" style="margin:0">Fill in connection details — the bash commands on the right update live. Password is intentionally <em>not</em> a field: the script prompts you for it.</p>
+      </div>
+      <div class="form-grid">
+        <div class="field full">
+          <label for="host">SingleStore host</label>
+          <input class="input" id="host" placeholder="svc-xxx.singlestore.com" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="port">Port</label>
+          <input class="input" id="port" value="3306" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="user">User</label>
+          <input class="input" id="user" placeholder="admin" autocomplete="off">
+        </div>
+        <div class="field full">
+          <label for="db">Database</label>
+          <input class="input" id="db" placeholder="my_database" autocomplete="off">
+        </div>
+        <div class="field full check">
+          <input type="checkbox" id="dry" checked>
+          <label for="dry" style="margin:0">Dry run (export + preview statements, execute nothing)</label>
+        </div>
+      </div>
+      <div class="note">
+        🔒 Nothing you type here leaves your browser. Values are only used to build the command text below.
+      </div>
+    </div>
+
+    <!-- Right: generated commands -->
+    <div class="stack">
+      <div>
+        <h3 style="margin:0 0 .6rem">1 · Install (one time)</h3>
+        <pre class="code"><code id="cmdInstall">curl -sL https://raw.githubusercontent.com/rakeshgniq/data-engineering-toolkit/main/install.sh | bash -s singlestore-pipeline-sync</code><button class="copy">Copy</button></pre>
+      </div>
+      <div>
+        <h3 style="margin:0 0 .6rem">2 · Run</h3>
+        <pre class="code"><code id="cmdRun">cd ~/data-engineering-toolkit/singlestore-pipeline-sync
+bash run_all.sh --dry-run</code><button class="copy">Copy</button></pre>
+        <p class="muted" style="font-size:.9rem;margin:.6rem 0 0">You will be prompted for the password (masked). Remove <code>--dry-run</code> to apply.</p>
+      </div>
+      <div>
+        <h3 style="margin:0 0 .6rem">Already installed? Run directly</h3>
+        <pre class="code"><code id="cmdQuick">bash run_all.sh --dry-run</code><button class="copy">Copy</button></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     HOW IT WORKS
+     ============================================================ -->
+<section class="section section--alt" id="how">
+  <div class="container two-col">
+    <div>
+      <h2 style="margin-top:0">How it works</h2>
+      <ol class="steps">
+        <li>
+          <h4>Export</h4>
+          <p><code>export_pipelines.py</code> runs <code>SHOW PIPELINES</code> then <code>SHOW CREATE PIPELINE</code> for each, rewrites them to <code>CREATE OR REPLACE</code>, and writes <code>pipelines.sql</code>.</p>
+        </li>
+        <li>
+          <h4>Dry run</h4>
+          <p><code>run_sql_file.py --dry-run</code> parses the file and lists every statement without touching the database. Review this first.</p>
+        </li>
+        <li>
+          <h4>Apply</h4>
+          <p>Same script without <code>--dry-run</code> executes each statement, prints OK/FAIL per statement and a summary. Exit code is non-zero if anything failed.</p>
+        </li>
+      </ol>
+    </div>
+    <div class="card" id="sql-runner">
+      <h3 style="margin-top:0">Files in this tool</h3>
+      <table class="files">
+        <thead><tr><th>File</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td><code>run_all.sh</code></td><td>Entry point. Reads <code>SINGLESTORE_*</code> env vars or prompts.</td></tr>
+          <tr><td><code>export_pipelines.py</code></td><td>Pipelines → <code>pipelines.sql</code></td></tr>
+          <tr><td><code>run_sql_file.py</code></td><td>Executes any .sql file statement by statement (SQL Runner)</td></tr>
+          <tr><td><code>requirements.txt</code></td><td><code>PyMySQL</code></td></tr>
+          <tr><td><code>databricks-app/</code></td><td>Optional Streamlit UI for Databricks Apps</td></tr>
+        </tbody>
+      </table>
+      <h4 style="margin:1.4rem 0 .4rem">Requirements</h4>
+      <ul class="muted" style="margin:0;padding-left:1.2rem;font-size:.95rem">
+        <li>Python 3.8+ (<code>py</code>, <code>python3</code> or <code>python</code> on PATH)</li>
+        <li>Git Bash / WSL on Windows, or any Linux/macOS shell</li>
+        <li>Network access to the SingleStore host on port 3306 (VPN)</li>
+      </ul>
+      <div style="margin-top:1.4rem">
+        <a class="btn btn--ghost btn--sm" href="https://github.com/rakeshgniq/data-engineering-toolkit/tree/main/tools/singlestore-pipeline-sync" target="_blank" rel="noopener">View source on GitHub</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="footer">
+  <div class="container footer__inner">
+    <div><strong>Data Engineering Toolkit</strong><span>Built for Data Engineers</span></div>
+    <div class="muted">© <span id="year"></span> · Internal use</div>
+  </div>
+</footer>
+
+<script src="../script.js"></script>
+<script>
+  // Command generator: builds bash one-liners from the form. Password is never included.
+  (function () {
+    const $ = (id) => document.getElementById(id);
+    const q = (v) => (/^[\w.@:-]+$/.test(v) ? v : `'${v.replace(/'/g, `'\\''`)}'`);  // quote only if needed
+
+    function build() {
+      const host = $("host").value.trim(), port = $("port").value.trim() || "3306",
+            user = $("user").value.trim(), db = $("db").value.trim(), dry = $("dry").checked;
+      const env = [];
+      if (host) env.push(`SINGLESTORE_HOST=${q(host)}`);
+      if (port !== "3306") env.push(`SINGLESTORE_PORT=${q(port)}`);
+      if (user) env.push(`SINGLESTORE_USER=${q(user)}`);
+      if (db)   env.push(`SINGLESTORE_DATABASE=${q(db)}`);
+      const prefix = env.length ? env.join(" ") + " " : "";
+      const flag = dry ? " --dry-run" : "";
+      const run = `${prefix}bash run_all.sh${flag}`;
+      $("cmdRun").textContent = `cd ~/data-engineering-toolkit/singlestore-pipeline-sync\n${run}`;
+      $("cmdQuick").textContent = run;
+    }
+    ["host", "port", "user", "db", "dry"].forEach((id) => $(id).addEventListener("input", build));
+    build();
+  })();
+</script>
+</body>
+</html>
+

@@ -1,4 +1,4 @@
-"""
+thin"""
 Databricks App: web form to export SingleStore pipelines and re-apply them.
 
 Runs export_pipelines.py then run_sql_file.py (both unchanged) as subprocesses.

@@ -1,0 +1,99 @@
+{
+  "site": {
+    "title": "Data Engineering Toolkit",
+    "subtitle": "SingleStore Pipeline Automation Hub",
+    "description": "A centralized toolkit for exporting pipelines, generating SQL, synchronizing configurations, and accelerating SingleStore development workflows.",
+    "repo": "https://github.com/rakeshgniq/data-engineering-toolkit",
+    "installBase": "https://raw.githubusercontent.com/rakeshgniq/data-engineering-toolkit/main/install.sh"
+  },
+
+  "categories": [
+    { "id": "singlestore", "name": "SingleStore",            "blurb": "Pipeline export, deployment and synchronization utilities." },
+    { "id": "sql",         "name": "SQL Utilities",          "blurb": "Generate, review and execute SQL safely." },
+    { "id": "developer",   "name": "Developer Productivity", "blurb": "Helpers, templates and best practices." }
+  ],
+
+  "tools": [
+    {
+      "id": "singlestore-pipeline-sync",
+      "name": "Pipeline Export & Sync",
+      "category": "singlestore",
+      "icon": "export",
+      "status": "stable",
+      "summary": "Export every CREATE PIPELINE definition from a SingleStore database to a single idempotent .sql file, then re-apply it with a dry-run safety step.",
+      "tags": ["singlestore", "pipelines", "backup", "deploy"],
+      "page": "tools/singlestore-pipeline-sync.html",
+      "repoPath": "tools/singlestore-pipeline-sync",
+      "install": true
+    },
+    {
+      "id": "sql-runner",
+      "name": "SQL Runner",
+      "category": "sql",
+      "icon": "play",
+      "status": "stable",
+      "summary": "Execute any .sql file against SingleStore statement by statement with progress, failure summary and --dry-run preview. Bundled with Pipeline Sync.",
+      "tags": ["sql", "execute", "singlestore"],
+      "page": "tools/singlestore-pipeline-sync.html#sql-runner",
+      "repoPath": "tools/singlestore-pipeline-sync/run_sql_file.py",
+      "install": false
+    },
+    {
+      "id": "sql-generator",
+      "name": "SQL Generator",
+      "category": "sql",
+      "icon": "code",
+      "status": "planned",
+      "summary": "Generate DDL / pipeline SQL from templates and parameters.",
+      "tags": ["sql", "templates"],
+      "page": null,
+      "repoPath": null,
+      "install": false
+    },
+    {
+      "id": "config-sync",
+      "name": "Configuration Sync",
+      "category": "singlestore",
+      "icon": "sync",
+      "status": "planned",
+      "summary": "Diff and synchronize pipeline and table configuration between environments.",
+      "tags": ["singlestore", "config", "environments"],
+      "page": null,
+      "repoPath": null,
+      "install": false
+    },
+    {
+      "id": "developer-utilities",
+      "name": "Developer Utilities",
+      "category": "developer",
+      "icon": "tools",
+      "status": "planned",
+      "summary": "Small helpers for day-to-day data engineering tasks.",
+      "tags": ["utilities"],
+      "page": null,
+      "repoPath": "templates/tool-template",
+      "install": false
+    },
+    {
+      "id": "best-practices",
+      "name": "Best Practices",
+      "category": "developer",
+      "icon": "book",
+      "status": "planned",
+      "summary": "Guidelines for pipeline design, credentials handling and safe deployments.",
+      "tags": ["docs", "guidelines"],
+      "page": null,
+      "repoPath": null,
+      "install": false
+    }
+  ],
+
+  "docs": [
+    { "title": "Getting Started",            "href": "#",  "note": "Installing tools with install.sh" },
+    { "title": "Pipeline Export & Sync Guide","href": "tools/singlestore-pipeline-sync.html", "note": "Export, dry-run, apply" },
+    { "title": "Adding a New Tool",          "href": "https://github.com/rakeshgniq/data-engineering-toolkit#adding-a-new-tool", "note": "Template + manifest entry" },
+    { "title": "Credentials & Security",     "href": "#",  "note": "Coming soon" },
+    { "title": "Troubleshooting",            "href": "#",  "note": "Coming soon" }
+  ]
+}
+
